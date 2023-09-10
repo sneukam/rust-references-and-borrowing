@@ -9,6 +9,8 @@ fn main() {
 
     let len: usize = calculate_len(&s1);
     println!("The length of String s1 = {}", len);
+
+    let reference_nothing: &String = dangling_pointers();
 }
 
 fn calculate_len(s: &String) -> usize {
@@ -105,3 +107,20 @@ fn references_outofscope_lasttime_value_used() {
     s1.push_str(", we modified s1!");
     println!("We modified s1 after the immutable references were last used in this function (and the compiler recognizes that they are out of scope at that point because they are no longer used.");
 }
+
+fn dangling_pointers() -> &String {
+    let s: String = String::from("Hellow world!");
+    &s
+    // return a immutable reference to s
+    // This does not work because s goes out of scope at the end of the function, and we do not give it a lifetime (which we have not learned about yet).
+    // s going out of scope means it is dropped (memory is de-allocated!).
+}
+
+
+// /**
+//  * 
+//  * RECAP
+//  * 
+//  * At any one time, we can have *either* one mutable reference or many immutable references.
+//  * This is because immutable references are not allowed when the value changes via an immutable reference -> and the compiler throws an error if we have a mutable reference at the same time and it's value is used during the scope of the immutable references.
+//  */
